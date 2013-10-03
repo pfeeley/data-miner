@@ -4,6 +4,8 @@ require 'open-uri'
 require 'digest/sha1'
 require 'mysql'
 
+CONFIG = YAML.load_file("./config.yml")
+
 #TODO: get IID from database
 
 #TODO: pull information from database and generate URL automatically
