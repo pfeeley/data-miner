@@ -3,10 +3,9 @@ require 'nokogiri'
 require 'open-uri'
 require 'digest/sha1'
 require 'mysql'
+require 'yaml'
 
 CONFIG = YAML.load_file("./config.yml")
-
-#TODO: get IID from database
 
 #TODO: pull information from database and generate URL automatically
 
@@ -15,12 +14,13 @@ file = Nokogiri::HTML(open("http://www.ebay.com/rvw/#{name}/102650543?_pgn=1"))
 pages = Integer(file.xpath("//div[@class='rvp-pgn']").text.split('\n')[0].split(' ')[3].delete "^0-9")
 puts "Getting content for page 1"
 reviews = file.xpath("//div[@id='Reviews']").first
-puts reviews
+
+#TODO: refactor single vs multiple reviews
 
 begin
-  db = Mysql.new('localhost','patridx2_miner','Miner@bluehost','patridx2_mining')
+  db = Mysql.new(CONFIG['hostname'],CONFIG['username'],CONFIG['password'],CONFIG['database'])
 
-  if pages > 1 && false
+  if pages > 1
     for i in 2..pages
       new_review = db.prepare "insert into reviews (page, review_hash) values (?,?)"
       puts "Getting content for page #{i}\n"
