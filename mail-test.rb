@@ -13,9 +13,13 @@ options = {
   :aurhentication => 'plain',
   :enable_starttls_auto => true }
 
-mail.deliver do
+Mail.defaults do
+  delivery_method :smtp, options
+end
+
+Mail.deliver do
   from    CONFIG['mail_username']
   to      CONFIG['mail_username']
   subject 'Test Email'
-  content 'This is a test email from ruby'
+  body    'This is a test email from ruby'
 end
