@@ -21,3 +21,5 @@ items.each_hash do |data|
   puts data["iid"] + "|" + data["name"] + "|" + pages.to_s()
   pullReview(pages,data["iid"],data["name"])
 end
+
+#db.execute("insert into reviews (page, item, review_hash, review_text) select page, item, review_hash, review_text from `reviews_stop-press`")

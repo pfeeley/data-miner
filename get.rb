@@ -9,7 +9,8 @@ def pullReview(pages,iid,name)
       new_review = @db.prepare "insert into `reviews_stop-press` (page,item,review_hash,review_text) values (?,?,?,?)"
       puts "Getting content for page #{i}\n"
       doc = Nokogiri::HTML(open("http://www.ebay.com/rvw/#{name}/#{iid}?_pgn=#{i}"))
-      reviews = doc.xpath("//div[@id='Reviews']")
+      review_page = doc.xpath("//div[@id='Reviews']")
+      reviews = review_page.xpath("//div[@class='rvp-w']")
       reviews.each do |review|
         hash = Digest::SHA1.hexdigest review
         new_review.execute i, iid, hash.to_s(), review.to_s()
