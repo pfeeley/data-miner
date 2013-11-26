@@ -1,4 +1,9 @@
 require 'rubygems'
 
-
-#TODO: parse reviews by star rating to train classifier
+def parseReviews(star_rating, review_body)
+  review_body.split(" ")
+  for review_body.each do |word|
+    #TODO: check if the word already exists in the index, add if new
+    #TODO: cycle through words and calculate score
+  end
+end
