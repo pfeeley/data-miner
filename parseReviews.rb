@@ -14,11 +14,11 @@ def parseReviews(star_rating, review_body, item, hash)
   #parse each word in the review
   review_body.each do |word|
     record = records_query.execute(word).fetch
-    if record.num_rows == 0
+    if record.empty?
       new_word.execute word, star_rating
     else
-      new_count = record["count"].to_f + 1.0
-      new_score = ((record["count"].to_f*record["score"].to_f)+star_rating.to_s.to_f)/(new_count)
+      new_count = record[1].to_f + 1.to_f
+      new_score = ((record[1].to_f*record[2].to_f)+star_rating.to_s.to_f)/(new_count)
       update_word.execute(new_count, new_score, word)
     end
   end
