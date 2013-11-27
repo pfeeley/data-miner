@@ -13,15 +13,13 @@ def parseReviews(star_rating, review_body, item, hash)
 
   #parse each word in the review
   review_body.each do |word|
-    records = records_query.execute(word)
-    if records.num_rows == 0
+    record = records_query.execute(word).fetch
+    if record.num_rows == 0
       new_word.execute word, star_rating
     else
-      records.each_hash do |record|
-        new_count = record["count"].to_f + 1.0
-        new_score = ((record["count"].to_f*record["score"].to_f)+star_rating.to_s.to_f)/(new_count)
-        update_word.execute(new_count, new_score, word)
-      end
+      new_count = record["count"].to_f + 1.0
+      new_score = ((record["count"].to_f*record["score"].to_f)+star_rating.to_s.to_f)/(new_count)
+      update_word.execute(new_count, new_score, word)
     end
   end
   db.close
