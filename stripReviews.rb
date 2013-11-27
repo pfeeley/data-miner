@@ -16,7 +16,8 @@ reviews = db.query("select * from reviews where parsed != 'Y'")
 reviews.each_hash do |review|
   review_html = Nokogiri::HTML(review["review_text"])
   review_rating = review_html.xpath("//span[@itemprop='reviewRating']/@content")
-  review_body = review_html.xpath("//div[@itemprop='reviewBody']")
-  #parseReviews(review_rating, review_body)
+  review_body = review_html.xpath("//div[@itemprop='reviewBody']").to_s.gsub(/(<.*?>|[^a-z ])/i,"")
+  puts review_body
+  parseReviews(review_rating, review_body)
   #db.execute("") #update parsed reviews flag
 end
